@@ -1,4 +1,5 @@
-cscc01-p1
+TweetDisplay
 =========
 
-Project #1 for the CSCC01 course
+Project #1 for the CSCC09 course. The objective of the project is to learn to interact
+with APIs.
