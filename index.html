@@ -117,25 +117,32 @@ ttp://www.sitepoint.com/css3-starwars-scrolling-text
     <div id="title">
       <div id="titlecontent">
         <p>
-        Since Google decided to deprecate its popular Google Reader, there has been a growing concern among savvy users about trusting other companies with their data. Forward thinking companies like Twitter have a strong RESTful API that allows users to explore the wealth of data they manage and even provide ways to download your entire archive of tweets.
+        This is my project for Assignment #1 of CSCC09.
+        Please click some of the links above for new data from my API.
+        <br>
+        <br>
+        Cheers,<br>
+        David Kua
         </p>
-        <p>
-        Many users rely on Twitter’s favorites as a mechanism to bookmark tweets that link to interesting content elsewhere on the web. However, in order to avoid a potential downfall in the future, where those favorites could one day become unavailable, I’ve decided to retrieve a list with my favorites tweets as a JSON object.</p>
       </div>
     </div>
   </body>
 
   <script type="text/javascript">
     function changeStage(url) {
-      var newContent = document.createElement("p");
-      newContent.innerHTML = "URL: " + url;
 
       var stage = $("#titlecontent");
       stage.empty();
 
       var newStage = stage.clone(true);
       newStage.offsetWidth;
-      newStage.append(newContent);
+      $.getJSON(url, function(data) {
+        $.each(data, function(key, val) {
+          para = document.createElement("p");
+          para.innerHTML = val;
+          newStage.append(para);
+        });
+      });
 
       stage.after(newStage);
       stage.remove();
