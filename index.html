@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <script src="/jquery-1.10.2.min.js" ></script>
+    <script>
+      $(document).ready(function() {
+        $("#inc").click(
+        $("#sum").load("/inc")
+        )
+      });
+    </script>
+  </head>
+  <body>
+    Sum: <div id="sum"> 0 </div>
+    <button id="inc">Increment!</button>
+  </body>
+</html>
