@@ -1,8 +1,10 @@
 var http = require("http");
 var fs = require("fs");
 var path = require("path");
-var tweetHandler = require("tweet-handler");
-var userHandler = require("user-handler");
+var tweet = require("./tweet-handler");
+var user = require("./user-handler");
+
+var favs = require("./favs.json");
 
 PORT = 24824;
 
@@ -43,22 +45,15 @@ http.createServer(function(req, res) {
     res.writeHead(pageStatus, getContentType(filePath));
     res.write(fileData);
     res.end();
-    return;
   }
 
   if (req.url === "/") {
     filePath = filePath + "/index.html";
     fs.readFile(filePath, fileHandler);
   } else if (urlArray[1] === "tweets") {
-    data = "Tweets"; // Send to Tweet request handler
-    res.setHeader("Content-Type", "text/html");
-    res.writeHead(pageStatus);
-    res.end(data);
+    tweet.handler(req, res, favs);
   } else if (urlArray[1] === "users") {
-    data = "Users"; // Send to User request handler
-    res.setHeader("Content-Type", "text/html");
-    res.writeHead(pageStatus);
-    res.end(data);
+    user.handler(req, res, favs);
   } else {
     filePath = filePath + req.url;
     fs.readFile(filePath, fileHandler);
