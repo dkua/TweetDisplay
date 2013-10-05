@@ -34,9 +34,25 @@ function getTweetLinks(id, json) {
         "tweet_id": json[i].id
       }
       var urls = json[i].entities.urls;
-      console.log(urls);
       for (var n=0; n<urls.length; n++) {
         item["link" + n+1] = urls[n].display_url;
+      }
+      data.push(item);
+    }
+  }
+  return data;
+}
+
+function getTweetHashtags(id, json) {
+  var data = new Array();
+  for (var i=0; i<json.length; i++) {
+    if (json[i].id === +id) {
+      item = {
+        "tweet_id": json[i].id
+      }
+      var hashtags = json[i].entities.hashtags;
+      for (var n=0; n<hashtags.length; n++) {
+        item["hashtag" + n+1] = hashtags[n].text;
       }
       data.push(item);
     }
@@ -65,6 +81,9 @@ var handler = function(req, res, json) {
       if (urlArray[3] === "links") {
         pageStatus = 200;
         data = data.concat(getTweetLinks(urlArray[2], json));
+      } else if (urlArray[3] === "hashtags") {
+        pageStatus = 200;
+        data = data.concat(getTweetHashtags(urlArray[2], json));
       }
   }
   console.log(data);
