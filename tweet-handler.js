@@ -60,6 +60,24 @@ function getTweetHashtags(id, json) {
   return data;
 }
 
+function getTweetMentions(id, json) {
+  var data = new Array();
+  for (var i=0; i<json.length; i++) {
+    if (json[i].id === +id) {
+      item = {
+        "tweet_id": json[i].id
+      }
+      var mentions = json[i].entities.user_mentions;
+      console.log(mentions);
+      for (var n=0; n<mentions.length; n++) {
+        item["mentions" + n+1] = mentions[n].screen_name;
+      }
+      data.push(item);
+    }
+  }
+  return data;
+}
+
 var handler = function(req, res, json) {
   var urlArray = req.url.toLowerCase().split("/");
   var data = new Array();
@@ -84,6 +102,9 @@ var handler = function(req, res, json) {
       } else if (urlArray[3] === "hashtags") {
         pageStatus = 200;
         data = data.concat(getTweetHashtags(urlArray[2], json));
+      } else if (urlArray[3] === "mentions") {
+        pageStatus = 200;
+        data = data.concat(getTweetMentions(urlArray[2], json));
       }
   }
   console.log(data);
