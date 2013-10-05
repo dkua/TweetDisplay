@@ -35,7 +35,7 @@ function getTweetLinks(id, json) {
       }
       var urls = json[i].entities.urls;
       for (var n=0; n<urls.length; n++) {
-        item["link" + n+1] = urls[n].display_url;
+        item["link" + (n+1)] = urls[n].display_url;
       }
       data.push(item);
     }
@@ -52,7 +52,7 @@ function getTweetHashtags(id, json) {
       }
       var hashtags = json[i].entities.hashtags;
       for (var n=0; n<hashtags.length; n++) {
-        item["hashtag" + n+1] = hashtags[n].text;
+        item["hashtag" + (n+1)] = hashtags[n].text;
       }
       data.push(item);
     }
@@ -70,7 +70,7 @@ function getTweetMentions(id, json) {
       var mentions = json[i].entities.user_mentions;
       console.log(mentions);
       for (var n=0; n<mentions.length; n++) {
-        item["mentions" + n+1] = mentions[n].screen_name;
+        item["mentions" + (n+1)] = mentions[n].screen_name;
       }
       data.push(item);
     }
