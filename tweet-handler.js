@@ -4,24 +4,69 @@ var path = require("path");
 var link = require("./link-handler");
 
 
-var handler = function(req, res, json) {
-  urlArray = req.url.toLowerCase().split("/");
-
-  if (urlArray[1] == "tweets") {
-    var tweets = new Array();
-    for (var i=0; i<json.length; i++) {
-      item = [
-        "#" + json[i].id,
-        json[i].text,
-        json[i].user.screen_name + " - " + json[i].created_at.split(" ").slice(0, 4).join(" ")
-      ].join("<br>");
-
-      tweets.push(item);
+function listTweets(json) {
+  var data = new Array();
+  for (var i=0; i<json.length; i++) {
+    item = {
+      "id": json[i].id,
+      "tweet": json[i].text,
+      "user": json[i].user.screen_name,
+      "date": json[i].created_at.split(" ").slice(0, 4).join(" ")
     }
-    pageStatus = 200;
-    data = tweets;
+    data.push(item);
   }
+  return data;
+}
 
+function getTweet(id, json) {
+  for (var i=0; i<json.length; i++) {
+    if (json[i].id === +id) {
+      return json[i];
+    }
+  }
+}
+
+function getTweetLinks(id, json) {
+  var data = new Array();
+  for (var i=0; i<json.length; i++) {
+    if (json[i].id === +id) {
+      item = {
+        "tweet_id": json[i].id
+      }
+      var urls = json[i].entities.urls;
+      console.log(urls);
+      for (var n=0; n<urls.length; n++) {
+        item["link" + n+1] = urls[n].display_url;
+      }
+      data.push(item);
+    }
+  }
+  return data;
+}
+
+var handler = function(req, res, json) {
+  var urlArray = req.url.toLowerCase().split("/");
+  var data = new Array();
+  var pageStatus = 404;
+
+  switch (urlArray.length) {
+    case 2:
+      if (urlArray[1] == "tweets") {
+        pageStatus = 200;
+        data = data.concat(listTweets(json));
+      }
+    case 3:
+      if (!isNaN(urlArray[2])) {
+        pageStatus = 200;
+        item = getTweet(urlArray[2], json);
+        data.push(item);
+      }
+    case 4:
+      if (urlArray[3] === "links") {
+        pageStatus = 200;
+        data = data.concat(getTweetLinks(urlArray[2], json));
+      }
+  }
   console.log(data);
   res.setHeader("Content-Type", "application/json");
   res.writeHead(pageStatus);
