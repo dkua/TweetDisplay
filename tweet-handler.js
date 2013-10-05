@@ -1,7 +1,6 @@
 var http = require("http");
 var fs = require("fs");
 var path = require("path");
-var link = require("./link-handler");
 
 
 function listTweets(json) {
