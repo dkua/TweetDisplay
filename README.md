@@ -16,11 +16,17 @@ Created with NodeJS.
 ## Our API Endpoints:
 
 /tweets - All tweets
+
 /tweets/:id - Details of tweet by ID
+
 /tweets/:id/links - Links of specific tweet
+
 /tweets/:id/hashtags - Hashtags of specific tweet
+
 /tweets/:id/mentions - Mentions of specific tweet
 
 /users - All users
+
 /users/:id - Details of user by ID
+
 /users/:id/tweets - Tweets of specific user
