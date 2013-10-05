@@ -17,10 +17,26 @@ ttp://www.sitepoint.com/css3-starwars-scrolling-text
           <a href="/"><input type="button" value="Home"></a>
         </li>
         <li>
-          <input type="button" value="Tweets" onClick="changeStage('/tweets');">
+        <select id="tweetSelect">
+          <option value="all">All Tweets</option>
+          <option value="">-----</option>
+        </select> 
+        </li>
+        <select id="linkSelect">
+          <option value="">View Links of Tweet #</option>
+          <option value="">-----</option>
+        </select> 
         </li>
         <li>
-          <input type="button" value="Users" onClick="changeStage('/users');">
+        <select id="userSelect">
+          <option value="all">All Users</option>
+          <option value="">-----</option>
+        </select> 
+        </li>
+        <select id="userTweetSelect">
+          <option value="">View Tweets for User</option>
+          <option value="">-----</option>
+        </select> 
         </li>
       </ul>
     </div>
@@ -39,23 +55,90 @@ ttp://www.sitepoint.com/css3-starwars-scrolling-text
   </body>
 
   <script type="text/javascript">
-    function changeStage(url) {
+    $.getJSON("/users", function(users) {
+        var userSelect = $("#userSelect");
+        var userTweetSelect = $("#userTweetSelect");
+        $.each(users, function(index, user) {
+          var option = $("<option />").val(user.id).text(user.screen_name);
+          userSelect.append(option.clone());
+          userTweetSelect.append(option);
+          });
+        });
 
+    $.getJSON("/tweets", function(tweets) {
+        var tweetSelect = $("#tweetSelect");
+        var linkSelect = $("#linkSelect");
+        $.each(tweets, function(index, tweet) {
+          var option = $("<option />").val(tweet.id).text(tweet.id);
+          tweetSelect.append(option.clone());
+          linkSelect.append(option);
+          });
+        });
+
+    function changeStage(url) {
       var stage = $("#titlecontent");
       stage.empty();
-
       var newStage = stage.clone(true);
+
       newStage.offsetWidth;
       $.getJSON(url, function(data) {
-        $.each(data, function(key, val) {
-          para = document.createElement("p");
-          para.innerHTML = val;
-          newStage.append(para);
-        });
-      });
-
+          $.each(data, function(key, val) {
+            para = document.createElement("p");
+            content = "";
+            $.each(val, function(k, v) {
+              content += k.toUpperCase() + ": " + v + "<br>"
+              });
+            para.innerHTML = content;
+            console.log(para);
+            newStage.append(para);
+            });
+          });
       stage.after(newStage);
       stage.remove();
     };
+
+    $("#userSelect").change(function() {
+      var selectURL = "/users";
+      var selection = $("#userSelect option:selected").val();
+      if (selection === "") {
+        return;
+      } else if (selection === "all") {
+        changeStage(selectURL);
+      } else {
+        changeStage(selectURL + "/" + selection);
+      }
+    });
+
+    $("#userTweetSelect").change(function() {
+      var selectURL = "/users";
+      var selection = $("#userTweetSelect option:selected").val();
+      if (selection === "") {
+        return;
+      } else {
+        changeStage(selectURL + "/" + selection + "/tweets");
+      }
+    });
+
+    $("#tweetSelect").change(function() {
+      var selectURL = "/tweets";
+      var selection = $("#tweetSelect option:selected").val();
+      if (selection === "") {
+        return;
+      } else if (selection === "all") {
+        changeStage(selectURL);
+      } else {
+        changeStage(selectURL + "/" + selection);
+      }
+    });
+
+    $("#linkSelect").change(function() {
+      var selectURL = "/tweets";
+      var selection = $("#linkSelect option:selected").val();
+      if (selection === "") {
+        return;
+      } else {
+        changeStage(selectURL + "/" + selection + "/links");
+      }
+    });
   </script>
 </html>
