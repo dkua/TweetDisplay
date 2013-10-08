@@ -10,7 +10,7 @@ Created with NodeJS.
 1. Branson Huang 998216014
 2. David Kua
 3. Michael Zheng
-4. Pan Xu
+4. Pan Xu 998448201
 
 
 ## Our API Endpoints:
