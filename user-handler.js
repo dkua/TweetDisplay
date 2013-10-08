@@ -7,7 +7,7 @@ function listUsers(json) {
   var data = new Array();
   for (var i=0; i<json.length; i++) {
     item = {
-      "id": json[i].user.id,
+      "id": json[i].user.id_str,
       "name": json[i].user.name,
       "screen_name": json[i].user.screen_name,
     }

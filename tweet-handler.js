@@ -7,7 +7,7 @@ function listTweets(json) {
   var data = new Array();
   for (var i=0; i<json.length; i++) {
     item = {
-      "id": json[i].id,
+      "id": json[i].id_str,
       "tweet": json[i].text,
       "user": json[i].user.screen_name,
       "date": json[i].created_at.split(" ").slice(0, 4).join(" ")
@@ -19,7 +19,7 @@ function listTweets(json) {
 
 function getTweet(id, json) {
   for (var i=0; i<json.length; i++) {
-    if (json[i].id === +id) {
+    if (json[i].id_str === id) {
       return json[i];
     }
   }
@@ -28,9 +28,9 @@ function getTweet(id, json) {
 function getTweetLinks(id, json) {
   var data = new Array();
   for (var i=0; i<json.length; i++) {
-    if (json[i].id === +id) {
+    if (json[i].id_str === id) {
       item = {
-        "tweet_id": json[i].id
+        "tweet_id": json[i].id_str
       }
       var urls = json[i].entities.urls;
       for (var n=0; n<urls.length; n++) {
@@ -45,9 +45,9 @@ function getTweetLinks(id, json) {
 function getTweetHashtags(id, json) {
   var data = new Array();
   for (var i=0; i<json.length; i++) {
-    if (json[i].id === +id) {
+    if (json[i].id_str === id) {
       item = {
-        "tweet_id": json[i].id
+        "tweet_id": json[i].id_str
       }
       var hashtags = json[i].entities.hashtags;
       for (var n=0; n<hashtags.length; n++) {
@@ -62,9 +62,9 @@ function getTweetHashtags(id, json) {
 function getTweetMentions(id, json) {
   var data = new Array();
   for (var i=0; i<json.length; i++) {
-    if (json[i].id === +id) {
+    if (json[i].id_str === id) {
       item = {
-        "tweet_id": json[i].id
+        "tweet_id": json[i].id_str
       }
       var mentions = json[i].entities.user_mentions;
       console.log(mentions);
